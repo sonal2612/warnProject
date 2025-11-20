@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Analytics{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+<h2 class="mb-4" style="font-weight: 700; color: #212529;">📈 WARRN Analytics Dashboard</h2>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3" style="border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <div class="card-body text-center" style="padding: 25px;">
+                <h5 class="card-title" style="font-weight: 600;">📊 Total Reports</h5>
+                <p class="card-text fs-1 fw-bold">{{ total_reports }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-danger mb-3" style="border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <div class="card-body text-center" style="padding: 25px;">
+                <h5 class="card-title" style="font-weight: 600;">🚨 New / Unclaimed</h5>
+                <p class="card-text fs-1 fw-bold">{{ status_counts.get('New', 0) }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success mb-3" style="border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <div class="card-body text-center" style="padding: 25px;">
+                <h5 class="card-title" style="font-weight: 600;">✅ Resolved Reports</h5>
+                <p class="card-text fs-1 fw-bold">{{ status_counts.get('Resolved', 0) }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-7 mb-4">
+        <div class="card" style="border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <div class="card-header fw-bold" style="background-color: #f8f9fa; font-size: 1.1rem;">🗺️ Incident Hotspots</div>
+            <div class="card-body">
+                <div id="heatmap" style="height: 400px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5 mb-4">
+        <div class="card" style="border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <div class="card-header fw-bold" style="background-color: #f8f9fa; font-size: 1.1rem;">🐾 Reports by Animal Type</div>
+            <div class="card-body">
+                <canvas id="animalChart" style="height: 400px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const map = L.map('heatmap').setView([20.5937, 78.9629], 5); // Centered on India
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    fetch('/api/reports')
+        .then(response => response.json())
+        .then(reports => {
+            const heatPoints = reports.map(report => [report.lat, report.lon, 0.5]);
+            L.heatLayer(heatPoints, { radius: 25, blur: 15 }).addTo(map);
+        });
+
+    const ctx = document.getElementById('animalChart').getContext('2d');
+    const animalChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ animal_labels | tojson }},
+            datasets: [{
+                label: '# of Reports',
+                data: {{ animal_data | tojson }},
+                backgroundColor: 'rgba(40, 167, 69, 0.7)',
+                borderColor: 'rgba(40, 167, 69, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: { scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }, responsive: true, maintainAspectRatio: false }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+<div class="container-fluid" style="padding: 40px; background: linear-gradient(to bottom, #f8f9fa 0%, #e9ecef 100%); min-height: calc(100vh - 56px);">
+    <div class="row justify-content-center">
+        <div class="col-md-11">
+            <!-- Hero Section -->
+            <div class="card mb-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                <div class="card-body" style="padding: 50px;">
+                    <h1 class="display-4" style="font-weight: 700; margin-bottom: 20px;">🐾 WARRN Admin Panel</h1>
+                    <p class="lead" style="font-size: 1.3rem; opacity: 0.95;">Wildlife Animal Rescue & Response Network</p>
+                    <hr style="border-color: rgba(255,255,255,0.3); margin: 30px 0;">
+                    <p style="font-size: 1.1rem; margin-bottom: 0;">Manage users, monitor reports, and track system performance from this central dashboard.</p>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <div class="card text-center" style="border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div class="card-body" style="padding: 30px;">
+                            <div style="font-size: 3rem; margin-bottom: 15px; color: #007bff;">👥</div>
+                            <h3 style="font-weight: 700; color: #007bff; margin-bottom: 10px;">{{ total_users }}</h3>
+                            <p class="text-muted" style="margin: 0; font-weight: 500;">Total Users</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <div class="card text-center" style="border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div class="card-body" style="padding: 30px;">
+                            <div style="font-size: 3rem; margin-bottom: 15px; color: #28a745;">📋</div>
+                            <h3 style="font-weight: 700; color: #28a745; margin-bottom: 10px;">{{ total_reports }}</h3>
+                            <p class="text-muted" style="margin: 0; font-weight: 500;">Total Reports</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <div class="card text-center" style="border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div class="card-body" style="padding: 30px;">
+                            <div style="font-size: 3rem; margin-bottom: 15px; color: #dc3545;">🚨</div>
+                            <h3 style="font-weight: 700; color: #dc3545; margin-bottom: 10px;">{{ new_reports }}</h3>
+                            <p class="text-muted" style="margin: 0; font-weight: 500;">New Reports</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <div class="card text-center" style="border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div class="card-body" style="padding: 30px;">
+                            <div style="font-size: 3rem; margin-bottom: 15px; color: #17a2b8;">✅</div>
+                            <h3 style="font-weight: 700; color: #17a2b8; margin-bottom: 10px;">{{ resolved_reports }}</h3>
+                            <p class="text-muted" style="margin: 0; font-weight: 500;">Resolved</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Cards -->
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100" style="border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div class="card-body text-center" style="padding: 40px;">
+                            <div style="font-size: 4rem; margin-bottom: 20px;">👥</div>
+                            <h4 class="card-title" style="font-weight: 600; margin-bottom: 15px;">User Management</h4>
+                            <p class="card-text text-muted" style="margin-bottom: 25px;">View and manage all registered users, assign roles, and monitor user activity.</p>
+                            <a href="{{ url_for('user.index_view') }}" class="btn btn-primary btn-lg" style="border-radius: 8px; padding: 12px 30px; font-weight: 600;">Manage Users</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100" style="border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div class="card-body text-center" style="padding: 40px;">
+                            <div style="font-size: 4rem; margin-bottom: 20px;">📋</div>
+                            <h4 class="card-title" style="font-weight: 600; margin-bottom: 15px;">Report Management</h4>
+                            <p class="card-text text-muted" style="margin-bottom: 25px;">View all incident reports, track status, and monitor resolution progress.</p>
+                            <a href="{{ url_for('report.index_view') }}" class="btn btn-success btn-lg" style="border-radius: 8px; padding: 12px 30px; font-weight: 600;">Manage Reports</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100" style="border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div class="card-body text-center" style="padding: 40px;">
+                            <div style="font-size: 4rem; margin-bottom: 20px;">📈</div>
+                            <h4 class="card-title" style="font-weight: 600; margin-bottom: 15px;">Analytics Dashboard</h4>
+                            <p class="card-text text-muted" style="margin-bottom: 25px;">View detailed statistics, charts, and incident hotspots across the system.</p>
+                            <a href="{{ url_for('analytics') }}" class="btn btn-info btn-lg" style="border-radius: 8px; padding: 12px 30px; font-weight: 600;">View Analytics</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="card" style="border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div class="card-body" style="padding: 30px;">
+                            <h5 class="card-title" style="font-weight: 600; margin-bottom: 20px;">🔗 Quick Access</h5>
+                            <div class="row">
+                                <div class="col-md-4 mb-2">
+                                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary w-100" style="padding: 12px; font-weight: 500;">📊 Responder Dashboard</a>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <a href="{{ url_for('index') }}" class="btn btn-outline-success w-100" style="padding: 12px; font-weight: 500;">🏠 Public Home Page</a>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <a href="{{ url_for('analytics') }}" class="btn btn-outline-info w-100" style="padding: 12px; font-weight: 500;">📈 System Analytics</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

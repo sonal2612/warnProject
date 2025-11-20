@@ -1,0 +1,14 @@
+Flask==2.3.3
+Flask-SQLAlchemy
+Flask-Login
+Flask-Bcrypt
+Flask-Mail
+Flask-Admin==1.6.1
+Gunicorn
+psycopg2-binary
+Werkzeug
+Jinja2
+itsdangerous
+SQLAlchemy
+Flask-SocketIO
+google-cloud-vision
